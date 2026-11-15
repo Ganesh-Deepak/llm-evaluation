@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluation &amp; Experimentation for LLM Systems</title>
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Prove that one version is better than another">
+<script>(function(){try{var t=localStorage.getItem("tfs-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);if(localStorage.getItem("tfs-side")==="collapsed"&&matchMedia("(min-width:82.001rem)").matches)document.documentElement.classList.add("pre-collapsed");}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/style.css?v=1">
+</head>
+<body>
+<main>
+
+<div class="hero">
+  <h1><span class="num">Course 1 &middot; Everyone track</span>Evaluation &amp; Experimentation for LLM Systems</h1>
+  <p class="lead">How to know whether an AI system actually works. You will define &quot;good&quot; before writing code, build a golden set and a judge you have validated against people, put an honest error bar on every number, and turn all of it into a regression suite that gates every change. Transformers Ch 26 taught how to evaluate a model; this course evaluates whole systems, in development and in production.</p>
+  <div class="stats">
+    <div><b>18</b> chapters</div>
+    <div><b>~23</b> hours</div>
+    <div><b>5</b> parts</div>
+    <div><b>92</b> sections</div>
+  </div>
+  <div class="bar"><i id="pbar"></i></div>
+  <div class="tiny" style="margin-top:.6rem" id="pnote">Progress is saved in this browser.</div>
+</div>
+
+<div class="box warn">
+<span class="t">Status: outline for review</span>
+<p style="margin-bottom:0">Every chapter page exists and shows its planned sections and what you will build, so you can
+read the course's shape before it is written. Prose, figures, quizzes, exercises, notebooks and the reference package
+(<code>evalkit</code>) follow, chapter by chapter, to the same standard as
+<a href="/transformers-from-scratch/course/index.html">Transformers From Scratch</a>.</p>
+</div>
+
+<h2>Who this is for</h2>
+<p>Engineers who can build LLM features but cannot yet prove one version beats another.</p>
+
+<h3>Before you start</h3>
+<ul><li><a class="xref" data-course="transformers" data-ch="26" href="/transformers-from-scratch/course/ch26-evaluation.html">Transformers&nbsp;Ch&nbsp;26</a> &mdash; Evaluating LLMs</li><li><a class="xref" data-course="transformers" data-ch="11" href="/transformers-from-scratch/course/ch11-training.html">Transformers&nbsp;Ch&nbsp;11</a> &mdash; Training a Transformer</li><li><a class="xref" data-course="transformers" data-ch="13" href="/transformers-from-scratch/course/ch13-decoding.html">Transformers&nbsp;Ch&nbsp;13</a> &mdash; Decoding and Sampling</li></ul>
+
+<h2>By the end you can</h2>
+<ul><li>Design a golden set and say how big it must be</li><li>Build an LLM judge and correct its scores for its own measured error</li><li>Decide whether a 3% win is real, with the right paired test</li><li>Evaluate retrieval, agents and safety on their own terms</li><li>Run evals as CI gates and as online experiments</li></ul>
+
+<div class="mn"><span class="k">Current to</span>November 2026. Judge-error correction with prediction-powered inference (PPI++) and Rogan–Gladen; rubric-based judging and rubrics as RL rewards; agent evaluation by end state and pass^k; harness sensitivity (the same model ranks differently in another harness); item response theory for small, adaptive benchmarks; batch-invariant inference as a variance source; always-valid sequential tests for online experiments.</div>
+
+<h2>The course</h2>
+<div class="parts" id="parts"></div>
+
+<h2>The capstone</h2>
+<p>An evaluation suite for a real LLM feature: golden set with measured agreement, a validated and corrected judge, paired significance, a CI gate, and an online experiment plan with its power calculation.</p>
+
+<h2>Colour is meaning</h2>
+<p>In this course the five semantic hues mark these roles, never decoration:</p>
+<div class="tw"><table class="hues"><tbody><tr><td><span class="hue" style="background:var(--dim-1)"></span></td><td>the system under test</td></tr><tr><td><span class="hue" style="background:var(--dim-2)"></span></td><td>the reference or baseline</td></tr><tr><td><span class="hue" style="background:var(--dim-3)"></span></td><td>human labels</td></tr><tr><td><span class="hue" style="background:var(--dim-4)"></span></td><td>the judge</td></tr><tr><td><span class="hue" style="background:var(--dim-5)"></span></td><td>the uncertainty</td></tr></tbody></table></div>
+
+<h2>Deliberately not covered</h2>
+<p>Model training (see Post-Training), and any public benchmark you cannot reproduce yourself.</p>
+
+<div style="margin-top:2.5rem;display:flex;gap:.7rem;align-items:center;flex-wrap:wrap">
+  <a class="btn primary" href="ch01-define.html" style="text-decoration:none;border-bottom:0">Read the outline of Chapter 1 &rarr;</a>
+  <a class="btn" href="/" style="text-decoration:none;border-bottom:0">The library</a>
+</div>
+
+</main>
+
+<script src="assets/chapters.js?v=1"></script>
+<script src="assets/course.js?v=1"></script>
+<script>
+(function () {
+  const wrap = document.getElementById("parts");
+  PARTS.forEach((p, pi) => {
+    const d = document.createElement("div");
+    d.className = "part";
+    d.dataset.pi = pi;
+    d.innerHTML =
+      `<div class="ph"><span class="pn">${p.n}</span><span class="pt">${p.t}</span>` +
+      `<span class="pd">${p.d}</span></div><div class="clist">` +
+      p.ch.map(c => `
+        <a class="ccard ${isDone(c.id) ? "done" : ""}" href="${c.f}">
+          <div class="num">${c.id}</div>
+          <div class="txt"><div class="t">${c.t}</div><div class="s">${c.s}</div></div>
+          <div class="tag">${c.tag}</div>
+        </a>`).join("") + `</div>`;
+    wrap.appendChild(d);
+  });
+  const done = CHAPTERS.filter(c => isDone(c.id)).length;
+  document.getElementById("pbar").style.width = (done / CHAPTERS.length * 100) + "%";
+  document.getElementById("pnote").textContent = Store.available()
+    ? `${done} of ${CHAPTERS.length} chapters complete. Progress is saved in this browser, shared with every course in the library.`
+    : "Progress can’t be saved here: browser storage is blocked.";
+  buildLayout(); buildTopbar(null); buildSidebar(null); decorateCode();
+  initReadingBar(); initKeyboard(null); applySidebarPref(); layoutMarginNotes();
+  window.addEventListener("load", layoutMarginNotes);
+  let rt;
+  window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { applySidebarPref(); layoutMarginNotes(); }, 100); });
+})();
+</script>
+</body>
+</html>
